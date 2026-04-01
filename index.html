@@ -3,10 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Excel Dashboard</title>
-
-  <!-- Auto refresh every 2 minutes -->
   <meta http-equiv="refresh" content="120">
-
   <style>
     html, body {
       margin: 0;
@@ -18,50 +15,41 @@
     }
 
     iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: fixed;
+      inset: 0;
       width: 100vw;
       height: 100vh;
       border: none;
+      display: block;
     }
   </style>
 </head>
-
 <body>
+  <iframe
+    src="https://pegind.sharepoint.com/sites/truckdriverdispatch/_layouts/15/Doc.aspx?sourcedoc={e72b98c6-15aa-4a96-a3d2-801c0d8144ac}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True"
+    allowfullscreen>
+  </iframe>
 
-<iframe
-  src="https://pegind.sharepoint.com/sites/truckdriverdispatch/_layouts/15/Doc.aspx?sourcedoc={e72b98c6-15aa-4a96-a3d2-801c0d8144ac}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True">
-</iframe>
-
-<script>
-  // Wake Lock to keep screen active
-  async function keepAwake() {
-    try {
-      if ('wakeLock' in navigator) {
-        const lock = await navigator.wakeLock.request('screen');
-        console.log("Wake Lock active");
-
-        lock.addEventListener('release', () => {
-          console.log("Wake Lock released, retrying...");
-          keepAwake();
-        });
+  <script>
+    async function keepAwake() {
+      try {
+        if ("wakeLock" in navigator) {
+          const lock = await navigator.wakeLock.request("screen");
+          lock.addEventListener("release", () => {
+            keepAwake();
+          });
+        }
+      } catch (err) {
+        console.log("Wake Lock error:", err);
       }
-    } catch (err) {
-      console.log("Wake Lock error:", err);
     }
-  }
 
-  // Simulate activity every minute
-  setInterval(() => {
-    console.log("Simulating activity");
-    document.dispatchEvent(new MouseEvent('mousemove'));
-    document.dispatchEvent(new KeyboardEvent('keydown'));
-  }, 60000);
+    setInterval(() => {
+      document.dispatchEvent(new MouseEvent("mousemove"));
+      document.dispatchEvent(new KeyboardEvent("keydown"));
+    }, 60000);
 
-  // Start wake lock
-  keepAwake();
-</script>
-
+    keepAwake();
+  </script>
 </body>
 </html>
